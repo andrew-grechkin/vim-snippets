@@ -1,139 +1,456 @@
-priority -50
+# => Conditionals ------------------------------------------------------------------------------------------------ {{{1
 
-###########################################################################
-#                            TextMate Snippets                            #
-###########################################################################
-snippet ife "Conditional if..else (ife)"
-if ($1) {
-	${2:# body...}
-}
-else {
-	${3:# else...}
-}
-
+snippet ter "Conditional: ternary"
+${1:condition} ? ${2:expression} : ${3:expression};
 endsnippet
 
-snippet ifee "Conditional if..elsif..else (ifee)"
+snippet if "Conditional: if"
 if ($1) {
-	${2:# body...}
+	${0:# TODO: body...}
+}
+endsnippet
+
+snippet else "Conditional: else"
+else {
+	${0:# TODO: else...}
+}
+endsnippet
+
+snippet elsif "Conditional: elsif"
+elsif ($1) {
+	${0:# TODO: elsif...}
+}
+endsnippet
+
+snippet ife "Conditional: if..else"
+if ($1) {
+	${2:# TODO: body...}
+}
+else {
+	${0:# TODO: else...}
+}
+endsnippet
+
+snippet ifee "Conditional: if..elsif..else"
+if ($1) {
+	${2:# TODO: body...}
 }
 elsif ($3) {
-	${4:# elsif...}
+	${4:# TODO: elsif...}
 }
 else {
-	${5:# else...}
+	${0:# TODO: else...}
 }
-
 endsnippet
 
-snippet xunless "Conditional one-line (unless)"
-${1:expression} unless ${2:condition};
-
+snippet given "Conditional: given"
+given (${1:var}) {
+	${2:# when}
+	${3:# default}
+}
+$0
 endsnippet
 
-snippet xif "Conditional one-line (xif)"
+snippet when "Conditional: when"
+when (${1:case}) {
+	${2}
+}
+$0
+endsnippet
+
+snippet default "Conditional: default"
+default {
+	${0}
+}
+endsnippet
+
+# => One line conditionals --------------------------------------------------------------------------------------- {{{1
+
+snippet ifx "Conditional one-line: if"
 ${1:expression} if ${2:condition};
-
+$0
 endsnippet
 
-snippet sub "Function (sub)"
-sub ${1:function_name} {
-	${2:# body...}
+snippet unlessx "Conditional one-line: unless"
+${1:expression} unless ${2:condition};
+$0
+endsnippet
+
+# => Loops ------------------------------------------------------------------------------------------------------- {{{1
+
+snippet map "Loop: map"
+map {${0}} ${1:@array}
+endsnippet
+
+snippet grep "Loop: grep"
+grep {${0}} ${1:@array}
+endsnippet
+
+snippet for "Loop: foreach"
+foreach my ${1:$x} (${2:@array}) {
+	${3:# TODO: body...}
 }
-
+$0
 endsnippet
 
-snippet xfore "Loop one-line (xforeach)"
-${1:expression} foreach @${2:array};
-
+snippet forc "Loop: for C-style"
+for (my $${1:i} = 0; $$1 < ${2:expression}; $$1++) {
+	${3:# TODO: body...}
+}
+$0
 endsnippet
 
-snippet xwhile "Loop one-line (xwhile)"
-${1:expression} while ${2:condition};
-
+snippet while "Loop: while"
+while ($1) {
+	${2:# TODO: body...}
+}
+$0
 endsnippet
 
-snippet test "Test"
-#!/usr/bin/env perl -w
+# => One line loops ---------------------------------------------------------------------------------------------- {{{1
 
+snippet forx "Loop one-line: foreach"
+${2:expression} foreach ${1:@array};
+$0
+endsnippet
+
+snippet whilex "Loop one-line: while"
+${2:expression} while ${1:condition};
+$0
+endsnippet
+
+# => Error checking ---------------------------------------------------------------------------------------------- {{{1
+
+snippet eval "Error checking: eval"
+eval {
+	${1:# do something risky...}
+	1;
+}
+or do {
+	chomp(my $error = $@ || 'zombie error');
+	${2:warn} ${3:"Eval finished with: $error"};
+};
+$0
+endsnippet
+
+snippet ordo "Error checking: or do"
+or do {
+	chomp(my $error = $@ || 'zombie error');
+	${1:warn} ${2:"Eval finished with: $error"};
+};
+$0
+endsnippet
+
+# => Functions --------------------------------------------------------------------------------------------------- {{{1
+
+snippet sub "Function: sub"
+sub ${1:name} (${2:$self}) {
+	${3:# TODO: body...}
+}
+$0
+endsnippet
+
+snippet suba "Function: anonymous"
+sub (${1:@params}) {
+	${0:# TODO: body...}
+};
+endsnippet
+
+snippet begin "Function: compiletime prologue" b
+BEGIN {
+	${1:# TODO: body...}
+}
+$0
+endsnippet
+
+snippet end "Function: epilogue" b
+END {
+	${0:# TODO: body...}
+}
+endsnippet
+
+# => Regex ------------------------------------------------------------------------------------------------------- {{{1
+
+snippet m/ "Regex: match with /"
+m/${1:regex}/${0:xms}
+endsnippet
+
+snippet m{ "Regex: match with {"
+m{${1:regex}}${0:xms}
+endsnippet
+
+snippet s/ "Regex: substitute with /"
+s/${1:regex}/${2:substitute}/${0:xmsgr}
+endsnippet
+
+snippet s{ "Regex: substitute with {"
+s{${1:regex}}{${2:substitute}}/${0:xmsgr}
+endsnippet
+
+snippet qr{ "Regex: simple"
+qr{${1:regex}}${0:xms}
+endsnippet
+
+snippet qrr{ "Regex: complex"
+qr{
+	\A
+	${1:regex}
+	\z
+}${0:xms}
+endsnippet
+
+# => Helpers ----------------------------------------------------------------------------------------------------- {{{1
+
+snippet #! "Helper: shebang" b
+#!/usr/bin/env perl
+
+$0
+endsnippet
+
+snippet bp "Helper: debug break here" b
+$DB::single=1;
+$0
+endsnippet
+
+snippet . "Helper: fat comma"
+=> ${1:value},
+$0
+endsnippet
+
+snippet slurp "Helper: slurp" b
+my $${1:var} = do { local $/ = undef; open my $fh, '<', ${2:$file}; <$fh> };
+$0
+endsnippet
+
+snippet notimp "Helper: not implemented" b
+croak((caller (0))[3], ': not implemented yet');
+$0
+endsnippet
+
+# => Headers ----------------------------------------------------------------------------------------------------- {{{1
+
+snippet head "Header: strict" b
+use v5.28;
 use strict;
-use Test::More tests => ${1:1};
-use ${2:ModuleName};
+use warnings;
 
-ok(${3:assertion});
+# core
+use Carp;
+use English;
 
+# non core
+
+# local
+$0
 endsnippet
 
-snippet class "class"
-package ${1:ClassName};
+snippet useau "Header: use autoclean" b
+use namespace::autoclean;
+endsnippet
 
-${2:use parent qw(${3:ParentClass});}${2/.+/\n\n/}sub new {
-	my $class = shift;
-	$class = ref $class if ref $class;
-	my $self = bless {}, $class;
-	$self;
-}
+snippet usecarp "Header: use Carp" b
+use Carp;
+endsnippet
+
+snippet usecon "Header: use constant" b
+use constant {
+	'${1:constant_name}' => ${2:'value'},
+};
+endsnippet
+
+snippet usedd "Header: use Data::Dump" b
+use Data::Dump qw(dd dump);
+endsnippet
+
+snippet usedump "Header: use Data::Dumper" b
+use Data::Dumper qw(Dumper);
+endsnippet
+
+snippet useerrno "Header: use Errno" b
+use Errno qw(:POSIX);
+endsnippet
+
+snippet useexpe "Header: use Experimental" b
+use experimental qw(declared_refs refaliasing signatures);
+endsnippet
+
+snippet useexpo "Header: use Exporter" b
+use Exporter qw(import);
+our @EXPORT_OK = qw(
+);
+endsnippet
+
+snippet usejson "Header: use JSON::MaybeXS" b
+use JSON::MaybeXS;
+endsnippet
+
+snippet uselu "Header: use List::Util" b
+use List::Util qw(any);
+endsnippet
+
+snippet uselog "Header: use Log::Any" b
+use Log::Any qw($log);
+endsnippet
+
+snippet usemod "Header: use Module::Runtime" b
+use Module::Runtime qw(use_module);
+endsnippet
+
+snippet usepath "Header: use Path::Tiny" b
+use Path::Tiny;
+endsnippet
+
+snippet useref "Header: use Ref::Util" b
+use Ref::Util qw(is_arrayref is_hashref);
+endsnippet
+
+snippet usesha "Header: use Digest::SHA" b
+use Digest::SHA qw(sha1_hex);
+endsnippet
+
+snippet usesys "Header: use System::Command" b
+use System::Command;
+endsnippet
+
+snippet usetestbas "Header: use Test2::Tools::Basic" b
+use Test2::Tools::Basic qw(todo);
+endsnippet
+
+snippet usetime "Header: use Time::HiRes" b
+use Time::HiRes qw(gettimeofday);
+endsnippet
+
+# => Packages ---------------------------------------------------------------------------------------------------- {{{1
+
+snippet package "Package: new" b
+package ${1:PackageName};
+
+# ABSTRACT: Package $1
+
+$0
 
 1;
 
+__END__
 endsnippet
 
-snippet eval "eval"
-local $@;
-eval {
-	${1:# do something risky...}
+snippet pkgm "Package: method call"
+__PACKAGE__->${1:package_method}(${0:params})
+endsnippet
+
+# => Classes ----------------------------------------------------------------------------------------------------- {{{1
+
+snippet moo "Class: Moo/Moose" b
+use ${1:Moo};
+use namespace::autoclean;
+
+$0
+
+__PACKAGE__->meta->make_immutable;
+endsnippet
+
+snippet has "Class: attribute" b
+has '${1:name}' => (
+	'is' => '${2:ro|rw}',
+);
+$0
+endsnippet
+
+snippet hasbuild "Class: attribute with builder" b
+has '${1:name}' => (
+	'is'	  => '${2:ro|rw}',
+	'lazy'	  => 1,
+	'builder' => '_build_$1',
+);
+$0
+
+sub _build_$1 ($self) {
+	${3:# TODO: body...}
+}
+endsnippet
+
+snippet hasdefault "Class: attribute with defauld" b
+has '${1:name}' => (
+	'is'	  => '${2:ro|rw}',
+	'isa'	  => '${3:Str|Int|HashRef|ArrayRef|etc}',
+	'lazy'	  => 1,
+	'default' => sub {${4:default_value}},
+);
+$0
+endsnippet
+
+snippet override "Class: override" b
+override ${1:name} => sub (${2:$self}) {
+	$0
 };
-if (my $${2:exception} = $@) {
-	${3:# handle failure...}
-}
-
 endsnippet
 
-snippet for "for"
-for (my $${1:var} = 0; $$1 < ${2:expression}; $$1++) {
-	${3:# body...}
-}
+# => Tests ------------------------------------------------------------------------------------------------------- {{{1
 
+snippet testm "Test: new module" b
+#!/usr/bin/env perl
+
+use v5.28;
+use strict;
+use warnings;
+
+# core
+use lib '.';
+
+# non core
+use Test2::V0;
+use Test2::Tools::Spec;
+use Test2::Plugin::SpecDeclare;
+
+# local
+use t::lib::Utils qw();
+use ${1:ModuleName};
+
+describe '${2:block name}' {
+	tests '${3:test name}' {
+		$0
+	};
+};
+
+done_testing;
 endsnippet
 
-snippet fore "foreach"
-foreach ${1:my $${2:x}} (@${3:array}) {
-	${4:# body...}
-}
-
+snippet descr "Test: describe block" b
+describe '${1:block name}' {
+	tests '${2:test name}' {
+		$0
+	};
+};
 endsnippet
 
-snippet if "if"
-if ($1) {
-	${2:# body...}
-}
-
+snippet tests "Test: block" b
+tests '${1:test name}' {
+	$0
+};
 endsnippet
 
-snippet slurp "slurp"
-my $${1:var} = do { local $/ = undef; open my $fh, '<', ${2:$file}; <$fh> };
+# => Pod --------------------------------------------------------------------------------------------------------- {{{1
 
+snippet pod "POD: block"
+=head1 NAME
+
+${1:`(ps/current-package-name)`} -- $0
+
+=head1 DESCRIPTION
+
+=cut
 endsnippet
 
-snippet unless "unless"
-unless ($1) {
-	${2:# body...}
-}
-
+snippet poda "POD: attributes"
+=head1 ATTRIBUTES
+$0
+=cut
 endsnippet
 
-snippet while "while"
-while ($1) {
-	${2:# body...}
-}
-
-endsnippet
-
-snippet until "until"
-until ($1) {
-	${2:# body...}
-}
-
+snippet podm "POD: methods"
+=head1 METHODS
+$0
+=cut
 endsnippet
 
 # vim:ft=snippets:
