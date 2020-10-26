@@ -175,7 +175,7 @@ snippet m/ "Regex: match with /"
 m/${1:regex}/${0:xms}
 endsnippet
 
-snippet m{ "Regex: match with {"
+snippet m{} "Regex: match with {"
 m{${1:regex}}${0:xms}
 endsnippet
 
@@ -183,15 +183,15 @@ snippet s/ "Regex: substitute with /"
 s/${1:regex}/${2:substitute}/${0:xmsgr}
 endsnippet
 
-snippet s{ "Regex: substitute with {"
-s{${1:regex}}{${2:substitute}}/${0:xmsgr}
+snippet s{} "Regex: substitute with {"
+s{${1:regex}}{${2:substitute}}${0:xmsgr}
 endsnippet
 
-snippet qr{ "Regex: simple"
+snippet qr{} "Regex: simple"
 qr{${1:regex}}${0:xms}
 endsnippet
 
-snippet qrr{ "Regex: complex"
+snippet qrr{} "Regex: complex"
 qr{
 	\A
 	${1:regex}
@@ -231,16 +231,19 @@ endsnippet
 
 snippet head "Header: strict" b
 use v5.28;
+use autodie;
 use strict;
+use utf8;
 use warnings;
 
 # core
 use Carp;
-use English;
+use English qw(-no_match_vars);
 
 # non core
 
 # local
+
 $0
 endsnippet
 
@@ -264,6 +267,10 @@ endsnippet
 
 snippet usedump "Header: use Data::Dumper" b
 use Data::Dumper qw(Dumper);
+endsnippet
+
+snippet useeng "Header: use English" b
+use English qw(-no_match_vars);
 endsnippet
 
 snippet useerrno "Header: use Errno" b
@@ -318,6 +325,15 @@ endsnippet
 
 snippet usetime "Header: use Time::HiRes" b
 use Time::HiRes qw(gettimeofday);
+endsnippet
+
+snippet useutf "Header: use utf8" b
+use utf8;
+use open ':locale';
+endsnippet
+
+snippet useyam "Header: use YAML" b
+use YAML::Tiny ();
 endsnippet
 
 # => Packages ---------------------------------------------------------------------------------------------------- {{{1
