@@ -232,9 +232,11 @@ endsnippet
 snippet head "Header: strict" b
 use v5.28;
 use autodie;
+use open ':std', 'IO' => ':locale';
 use strict;
 use utf8;
 use warnings;
+use experimental qw(declared_refs refaliasing signatures);
 
 # core
 use Carp;
