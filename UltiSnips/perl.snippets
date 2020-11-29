@@ -6,40 +6,40 @@ endsnippet
 
 snippet if "Conditional: if"
 if ($1) {
-	${0:# TODO: body...}
+	${0:...}
 }
 endsnippet
 
 snippet else "Conditional: else"
 else {
-	${0:# TODO: else...}
+	${0:...}
 }
 endsnippet
 
 snippet elsif "Conditional: elsif"
 elsif ($1) {
-	${0:# TODO: elsif...}
+	${0:...}
 }
 endsnippet
 
 snippet ife "Conditional: if..else"
 if ($1) {
-	${2:# TODO: body...}
+	${2:...}
 }
 else {
-	${0:# TODO: else...}
+	${0:...}
 }
 endsnippet
 
 snippet ifee "Conditional: if..elsif..else"
 if ($1) {
-	${2:# TODO: body...}
+	${2:...}
 }
 elsif ($3) {
-	${4:# TODO: elsif...}
+	${4:...}
 }
 else {
-	${0:# TODO: else...}
+	${0:...}
 }
 endsnippet
 
@@ -78,31 +78,39 @@ endsnippet
 
 # => Loops ------------------------------------------------------------------------------------------------------- {{{1
 
-snippet map "Loop: map"
+snippet map "Loop: map (block)"
 map {${0}} ${1:@array}
 endsnippet
 
-snippet grep "Loop: grep"
+snippet mapx "Loop: map"
+map ${0}, ${1:@array}
+endsnippet
+
+snippet grep "Loop: grep (block)"
 grep {${0}} ${1:@array}
+endsnippet
+
+snippet grepx "Loop: grep"
+grep ${0}, ${1:@array}
 endsnippet
 
 snippet for "Loop: foreach"
 foreach my ${1:$x} (${2:@array}) {
-	${3:# TODO: body...}
+	${3:...}
 }
 $0
 endsnippet
 
 snippet forc "Loop: for C-style"
 for (my $${1:i} = 0; $$1 < ${2:expression}; $$1++) {
-	${3:# TODO: body...}
+	${3:...}
 }
 $0
 endsnippet
 
 snippet while "Loop: while"
 while ($1) {
-	${2:# TODO: body...}
+	${2:...}
 }
 $0
 endsnippet
@@ -123,7 +131,7 @@ endsnippet
 
 snippet eval "Error checking: eval"
 eval {
-	${1:# do something risky...}
+	${1:...}
 	1;
 }
 or do {
@@ -145,27 +153,27 @@ endsnippet
 
 snippet sub "Function: sub"
 sub ${1:name} (${2:$self}) {
-	${3:# TODO: body...}
+	${3:...}
 }
 $0
 endsnippet
 
 snippet suba "Function: anonymous"
 sub (${1:@params}) {
-	${0:# TODO: body...}
+	${0:...}
 };
 endsnippet
 
 snippet begin "Function: compiletime prologue" b
 BEGIN {
-	${1:# TODO: body...}
+	${1:...}
 }
 $0
 endsnippet
 
 snippet end "Function: epilogue" b
 END {
-	${0:# TODO: body...}
+	${0:...}
 }
 endsnippet
 
@@ -232,10 +240,10 @@ endsnippet
 snippet head "Header: strict" b
 use v5.28;
 use autodie;
-use open ':std', 'IO' => ':locale';
+use open ':locale';
 use strict;
 use utf8;
-use warnings;
+use warnings FATAL => qw(utf8);
 use experimental qw(declared_refs refaliasing signatures);
 
 # core
@@ -271,6 +279,10 @@ snippet usedump "Header: use Data::Dumper" b
 use Data::Dumper qw(Dumper);
 endsnippet
 
+snippet usepp "Header: use Data::Printer" b
+use Data::Printer;
+endsnippet
+
 snippet useeng "Header: use English" b
 use English qw(-no_match_vars);
 endsnippet
@@ -289,7 +301,11 @@ our @EXPORT_OK = qw(
 );
 endsnippet
 
-snippet usejson "Header: use JSON::MaybeXS" b
+snippet usejson "Header: use JSON" b
+use JSON;
+endsnippet
+
+snippet usejsonx "Header: use JSON::MaybeXS" b
 use JSON::MaybeXS;
 endsnippet
 
@@ -376,22 +392,22 @@ endsnippet
 
 snippet hasbuild "Class: attribute with builder" b
 has '${1:name}' => (
-	'is'	  => '${2:ro|rw}',
-	'lazy'	  => 1,
+	'is'      => '${2:ro|rw}',
+	'lazy'    => 1,
 	'builder' => '_build_$1',
 );
 $0
 
 sub _build_$1 ($self) {
-	${3:# TODO: body...}
+	${3:...}
 }
 endsnippet
 
 snippet hasdefault "Class: attribute with defauld" b
 has '${1:name}' => (
-	'is'	  => '${2:ro|rw}',
-	'isa'	  => '${3:Str|Int|HashRef|ArrayRef|etc}',
-	'lazy'	  => 1,
+	'is'      => '${2:ro|rw}',
+	'isa'     => '${3:Str|Int|HashRef|ArrayRef|etc}',
+	'lazy'    => 1,
 	'default' => sub {${4:default_value}},
 );
 $0
