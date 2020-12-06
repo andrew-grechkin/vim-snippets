@@ -78,6 +78,10 @@ endsnippet
 
 # => Loops ------------------------------------------------------------------------------------------------------- {{{1
 
+snippet sort "Loop: sort (block)"
+sort {${0:$a <=> $b}} ${1:@array}
+endsnippet
+
 snippet map "Loop: map (block)"
 map {${0}} ${1:@array}
 endsnippet
@@ -180,23 +184,23 @@ endsnippet
 # => Regex ------------------------------------------------------------------------------------------------------- {{{1
 
 snippet m/ "Regex: match with /"
-m/${1:regex}/${0:xms}
+m/${1:regex}/${0:x}
 endsnippet
 
 snippet m{} "Regex: match with {"
-m{${1:regex}}${0:xms}
+m{${1:regex}}${0:x}
 endsnippet
 
 snippet s/ "Regex: substitute with /"
-s/${1:regex}/${2:substitute}/${0:xmsgr}
+s/${1:regex}/${2:substitute}/${0:xgr}
 endsnippet
 
 snippet s{} "Regex: substitute with {"
-s{${1:regex}}{${2:substitute}}${0:xmsgr}
+s{${1:regex}}{${2:substitute}}${0:xgr}
 endsnippet
 
 snippet qr{} "Regex: simple"
-qr{${1:regex}}${0:xms}
+qr{${1:regex}}${0:x}
 endsnippet
 
 snippet qrr{} "Regex: complex"
@@ -204,7 +208,7 @@ qr{
 	\A
 	${1:regex}
 	\z
-}${0:xms}
+}${0:x}
 endsnippet
 
 # => Helpers ----------------------------------------------------------------------------------------------------- {{{1
@@ -279,7 +283,7 @@ snippet usedump "Header: use Data::Dumper" b
 use Data::Dumper qw(Dumper);
 endsnippet
 
-snippet usepp "Header: use Data::Printer" b
+snippet usedp "Header: use Data::Printer" b
 use Data::Printer;
 endsnippet
 
@@ -343,11 +347,6 @@ endsnippet
 
 snippet usetime "Header: use Time::HiRes" b
 use Time::HiRes qw(gettimeofday);
-endsnippet
-
-snippet useutf "Header: use utf8" b
-use utf8;
-use open ':locale';
 endsnippet
 
 snippet useyam "Header: use YAML" b
@@ -446,7 +445,7 @@ describe '${2:block name}' {
 	};
 };
 
-done_testing;
+done_testing();
 endsnippet
 
 snippet descr "Test: describe block" b
