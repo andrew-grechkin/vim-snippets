@@ -241,12 +241,12 @@ endsnippet
 
 # => Headers ----------------------------------------------------------------------------------------------------- {{{1
 
-snippet head "Header: strict" b
+snippet head "Header: pragmas" b
 use v5.28;
 use autodie;
 use open ':locale';
-use strict;
 use utf8;
+use warnings;
 use warnings FATAL => qw(utf8);
 use experimental qw(declared_refs refaliasing signatures);
 
@@ -424,7 +424,6 @@ snippet testm "Test: new module" b
 #!/usr/bin/env perl
 
 use v5.28;
-use strict;
 use warnings;
 
 # core
