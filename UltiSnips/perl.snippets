@@ -98,6 +98,13 @@ snippet grepx "Loop: grep"
 grep ${0}, ${1:@array}
 endsnippet
 
+snippet each "Loop: each"
+while (my (${1:$key}, ${2:$value}) = each ${3:%hash}) {
+	${4:...}
+}
+$0
+endsnippet
+
 snippet for "Loop: foreach"
 foreach my ${1:$x} (${2:@array}) {
 	${3:...}
