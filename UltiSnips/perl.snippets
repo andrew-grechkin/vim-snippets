@@ -294,6 +294,21 @@ snippet usedp "Header: use Data::Printer" b
 use Data::Printer;
 endsnippet
 
+snippet usedt "Header: use DateTime" b
+use DateTime;
+use DateTime::Format::Strptime;
+
+state %datetime_defaults = (
+    'locale'    => DateTime::Locale->load('nl_NL'),
+    'time_zone' => DateTime::TimeZone->new(name => 'UTC'),
+);
+state $datetime_formatter = DateTime::Format::Strptime->new(
+    'pattern' => '%F %T',
+    'strict'  => 1,
+    %datetime_defaults,
+);
+endsnippet
+
 snippet useeng "Header: use English" b
 use English qw(-no_match_vars);
 endsnippet
