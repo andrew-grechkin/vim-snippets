@@ -1,39 +1,76 @@
-priority -50
+# vim: ft=snippets
 
-global !p
-import vim
+snippet #! "shebang" b
+#!/usr/bin/env bash
 
-# Tests for the existence of a variable declared by Vim's filetype detection
-# suggesting the type of shell script of the current file
-def testShell(scope, shell):
-	return vim.eval("exists('" + scope + ":is_" + shell + "')")
-
-# Loops over the possible variables, checking for global variables
-# first since they indicate an override by the user.
-def getShell():
-	for scope in ["g", "b"]:
-		for shell in ["bash", "posix", "sh", "kornshell"]:
-			if testShell(scope, shell) == "1":
-				if shell == "kornshell":
-					return "ksh"
-				if shell == "posix":
-					return "sh"
-				return shell
-	return "sh"
-endglobal
-
-###########################################################################
-#                            TextMate Snippets                            #
-###########################################################################
-snippet #! "#!/usr/bin/env (!env)" b
-`!p snip.rv = '#!/usr/bin/env ' + getShell() + "\n" `
+set -Eeuo pipefail
 endsnippet
 
-snippet sbash "safe bash options" b
-#!/usr/bin/env bash
-set -euo pipefail
-IFS=$'\n\t'
-`!p snip.rv ='\n\n' `
+snippet if "if ... then" b
+if [[ ${1:condition} ]]; then
+	${0:${VISUAL}}
+fi
+endsnippet
+
+snippet elif "elif .. (elif)" b
+elif [[ ${1:condition} ]]; then
+	${0:${VISUAL}}
+endsnippet
+
+snippet for "for ... done (for)" b
+for (( ${1:I} = 0; $1 < ${2:10}; $1++ )); do
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet forin "for ... in ... done (forin)" b
+for ${1:I} in ${2:words}; do
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet while "while ... (done)" b
+while [[ ${1:condition} ]]; do
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet until "until ... (done)" b
+until [[ ${1:condition} ]]; do
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet case "case .. esac (case)" b
+case ${1:word} in
+	${2:pattern})
+		${0};;
+esac
+endsnippet
+
+snippet fun
+function ${1:name}() {
+	${0:# TODO: body...}
+}
+endsnippet
+
+snippet date
+DATETIME=$(date --rfc-3339=ns)
+endsnippet
+
+snippet sdir
+SCRIPT=$(realpath -s "$0")
+SDIR=$(dirname "$SCRIPT")
+endsnippet
+
+snippet root
+[ \$(id -u) -ne 0 ] && exec sudo "\$@"
+endsnippet
+
+snippet here "here document (here)"
+<<-${2:'${1:TOKEN}'}
+	$0
+${1/['"`](.+)['"`]/$1/}
 endsnippet
 
 snippet temp "Tempfile" b
@@ -41,66 +78,52 @@ ${1:TMPFILE}="$(mktemp -t ${3:--suffix=${4:.SUFFIX}} ${2:`!p
 snip.rv = re.sub(r'[^a-zA-Z]', '_', snip.fn) or "untitled"
 `}.XXXXXX)"
 ${5:${6/(.+)/trap "/}${6:rm -f '$${1/.*\s//}'}${6/(.+)/" 0               # EXIT\n/}${7/(.+)/trap "/}${7:rm -f '$${1/.*\s//}'; exit 1}${7/(.+)/" 2       # INT\n/}${8/(.+)/trap "/}${8:rm -f '$${1/.*\s//}'; exit 1}${8/(.+)/" 1 15    # HUP TERM\n/}}
-
 endsnippet
 
-snippet /case|sw(itch)?/ "case .. esac (case)" rb
-case ${1:word} in
-	${2:pattern} )
-		${0:${VISUAL}};;
-esac
+# getopt
+snippet go
+	while getopts '${1:o}' ${2:opts}
+	do
+		case $$2 in
+		${3:o0})
+			${0:#staments};;
+		esac
+	done
 endsnippet
 
-snippet elif "elif .. (elif)" b
-elif ${2:[[ ${1:condition} ]]}; then
-	${0:${VISUAL}}
-endsnippet
+snippet getopt
+	__ScriptVersion="${1:version}"
 
-snippet for "for ... done (for)" b
-for (( i = 0; i < ${1:10}; i++ )); do
-	${0:${VISUAL}}
-done
-endsnippet
+	#===  FUNCTION  ================================================================
+	#         NAME:  usage
+	#  DESCRIPTION:  Display usage information.
+	#===============================================================================
+	function usage ()
+	{
+		echo "Usage :  $${0:0} [options] [--]
 
-snippet forin "for ... in ... done (forin)" b
-for ${1:i}${2/.+/ in /}${2:words}; do
-	${0:${VISUAL}}
-done
-endsnippet
+	    Options:
+	    -h|help       Display this message
+	    -v|version    Display script version"
 
-snippet here "here document (here)"
-<<-${2:'${1:TOKEN}'}
-	$0`echo \\n`${1/['"`](.+)['"`]/$1/}
-endsnippet
+	}    # ----------  end of function usage  ----------
 
-snippet /ift(est)?/ "if ... then (if)" rb
-if ${2:[ ${1:condition} ]}; then
-	${0:${VISUAL}}
-fi
-endsnippet
+	#-----------------------------------------------------------------------
+	#  Handle command line arguments
+	#-----------------------------------------------------------------------
 
-snippet if "if ... then (if)" b
-if [[ ${1:condition} ]]; then
-	${0:${VISUAL}}
-fi
-endsnippet
+	while getopts ":hv" opt
+	do
+	  case $opt in
 
-snippet until "until ... (done)" b
-until ${2:[[ ${1:condition} ]]}; do
-	${0:${VISUAL}}
-done
-endsnippet
+		h|help     )  usage; exit 0   ;;
 
-snippet /wh(ile)?/ "while ... (done)" rb
-while ${2:[[ ${1:condition} ]]}; do
-	${0:${VISUAL}}
-done
-endsnippet
+		v|version  )  echo "$${0:0} -- Version $__ScriptVersion"; exit 0   ;;
 
-snippet func "function() {...}" b
-${1:function} () {
-	${0:${VISUAL}}
-}
-endsnippet
+		* )  echo -e "\n  Option does not exist : $OPTARG\n"
+			  usage; exit 1   ;;
 
-# vim:ft=snippets:
+	  esac    # --- end of case ---
+	done
+	shift $(($OPTIND-1))
+endsnippet

@@ -1,0 +1,25 @@
+snippet notest "no-test: 2"
+Pakket:
+  build:
+    no-test: 2
+endsnippet
+
+snippet scaff "scaffold"
+Pakket:
+  scaffold:
+endsnippet
+
+snippet prereqs "prereqs"
+Pakket:
+  prereqs:
+    runtime:
+      requires:
+        perl/URI: 0
+  scaffold:
+    no-dist: 1
+    no-dzil: 1
+  build:
+    no-test: 2
+endsnippet
+
+# vim:ft=snippets:

@@ -1,139 +1,599 @@
-priority -50
+# vim: filetype=snippets
 
-###########################################################################
-#                            TextMate Snippets                            #
-###########################################################################
-snippet ife "Conditional if..else (ife)"
+# => Conditionals ------------------------------------------------------------------------------------------------- {{{1
+
+snippet ter "Conditional: ternary"
+${1:condition} ? ${2:expression} : ${3:expression};
+endsnippet
+
+snippet if "Conditional: if"
 if ($1) {
-	${2:# body...}
+	${0:...}
+}
+endsnippet
+
+snippet else "Conditional: else"
+else {
+	${0:...}
+}
+endsnippet
+
+snippet elsif "Conditional: elsif"
+elsif ($1) {
+	${0:...}
+}
+endsnippet
+
+snippet ife "Conditional: if..else"
+if ($1) {
+	${2:...}
 }
 else {
-	${3:# else...}
+	${0:...}
 }
-
 endsnippet
 
-snippet ifee "Conditional if..elsif..else (ifee)"
+snippet ifee "Conditional: if..elsif..else"
 if ($1) {
-	${2:# body...}
+	${3:...}
 }
-elsif ($3) {
-	${4:# elsif...}
+elsif ($2) {
+	${4:...}
 }
 else {
-	${5:# else...}
+	${0:...}
 }
-
 endsnippet
 
-snippet xunless "Conditional one-line (unless)"
-${1:expression} unless ${2:condition};
+# => One line conditionals ---------------------------------------------------------------------------------------- {{{1
 
-endsnippet
-
-snippet xif "Conditional one-line (xif)"
+snippet xif "Conditional one-line: if"
 ${1:expression} if ${2:condition};
-
+$0
 endsnippet
 
-snippet sub "Function (sub)"
-sub ${1:function_name} {
-	${2:# body...}
+snippet xunl "Conditional one-line: unless"
+${1:expression} unless ${2:condition};
+$0
+endsnippet
+
+# => Loops -------------------------------------------------------------------------------------------------------- {{{1
+
+snippet sort "Loop: numeric sort (block)"
+sort {${0:$a <=> $b}} ${1:@array}
+endsnippet
+
+snippet map "Loop: map (block)"
+map {${0}} ${1:@array}
+endsnippet
+
+snippet mapx "Loop: map"
+map ${0}, ${1:@array}
+endsnippet
+
+snippet grep "Loop: grep (block)"
+grep {${0}} ${1:@array}
+endsnippet
+
+snippet grepx "Loop: grep"
+grep ${0}, ${1:@array}
+endsnippet
+
+snippet for "Loop: foreach"
+foreach my ${1:$x} (${2:@array}) {
+	${3:...}
 }
-
+$0
 endsnippet
 
-snippet xfore "Loop one-line (xforeach)"
-${1:expression} foreach @${2:array};
-
-endsnippet
-
-snippet xwhile "Loop one-line (xwhile)"
-${1:expression} while ${2:condition};
-
-endsnippet
-
-snippet test "Test"
-#!/usr/bin/env perl -w
-
-use strict;
-use Test::More tests => ${1:1};
-use ${2:ModuleName};
-
-ok(${3:assertion});
-
-endsnippet
-
-snippet class "class"
-package ${1:ClassName};
-
-${2:use parent qw(${3:ParentClass});}${2/.+/\n\n/}sub new {
-	my $class = shift;
-	$class = ref $class if ref $class;
-	my $self = bless {}, $class;
-	$self;
+snippet fori "Loop: foreach indexed"
+foreach my (${1:$key}, ${2:$value}) (${3:indexed(@array)}) {
+	${4:...}
 }
-
-1;
-
+$0
 endsnippet
 
-snippet eval "eval"
-local $@;
-eval {
-	${1:# do something risky...}
-};
-if (my $${2:exception} = $@) {
-	${3:# handle failure...}
+snippet for_ "Loop: for $_"
+for (${1:@array}) {
+	${2:...}
 }
-
+$0
 endsnippet
 
-snippet for "for"
-for (my $${1:var} = 0; $$1 < ${2:expression}; $$1++) {
-	${3:# body...}
+snippet forc "Loop: for C-style"
+for (my $${1:i} = 0; $$1 < ${2:$size}; ++$$1) {
+	${3:...}
 }
-
+$0
 endsnippet
 
-snippet fore "foreach"
-foreach ${1:my $${2:x}} (@${3:array}) {
-	${4:# body...}
-}
-
-endsnippet
-
-snippet if "if"
-if ($1) {
-	${2:# body...}
-}
-
-endsnippet
-
-snippet slurp "slurp"
-my $${1:var} = do { local $/ = undef; open my $fh, '<', ${2:$file}; <$fh> };
-
-endsnippet
-
-snippet unless "unless"
-unless ($1) {
-	${2:# body...}
-}
-
-endsnippet
-
-snippet while "while"
+snippet while "Loop: while"
 while ($1) {
-	${2:# body...}
+	${2:...}
 }
-
+$0
 endsnippet
 
-snippet until "until"
-until ($1) {
-	${2:# body...}
-}
+# => One line loops ----------------------------------------------------------------------------------------------- {{{1
 
+snippet xfor "Loop one-line: foreach"
+${2:expression} foreach ${1:@array};
+$0
 endsnippet
 
-# vim:ft=snippets:
+snippet xwhi "Loop one-line: while"
+${2:expression} while ${1:condition};
+$0
+endsnippet
+
+# => Error checking ----------------------------------------------------------------------------------------------- {{{1
+
+snippet try "Error checking: try"
+try {
+	${1:...}
+} catch ($err) {
+	${2:warn} ${3:"error occured: $err"};
+}
+$0
+endsnippet
+
+snippet tryf "Error checking: try finally"
+try {
+	${1:...}
+} catch ($err) {
+	${2:warn} ${3:"error occured: $err"};
+} finally {
+	${4:...}
+}
+$0
+endsnippet
+
+snippet eval "Error checking: eval"
+eval {
+	${1:...}
+	1;
+}
+or do {
+	chomp(my $err = $@ || 'zombie error');
+	${2:warn} ${3:"eval finished with: $err"};
+};
+$0
+endsnippet
+
+snippet ordo "Error checking: or do"
+or do {
+	chomp(my $err = $@ || 'zombie error');
+	${1:warn} ${2:"eval finished with: $err"};
+};
+$0
+endsnippet
+
+# => Functions ---------------------------------------------------------------------------------------------------- {{{1
+
+snippet sub "Function: named"
+sub ${1:name} (${2:$self}) {
+	${3:...}
+	return;
+}
+$0
+endsnippet
+
+snippet suba "Function: anonymous"
+sub (${1:@params}) {
+	${0:...}
+}
+endsnippet
+
+snippet begin "Function: compiletime prologue" b
+BEGIN {
+	${1:...}
+}
+$0
+endsnippet
+
+snippet end "Function: epilogue" b
+END {
+	${0:...}
+}
+endsnippet
+
+# => Regex -------------------------------------------------------------------------------------------------------- {{{1
+
+snippet m/ "Regex: match with /"
+m/${1:regex}/${0:x}
+endsnippet
+
+snippet m{ "Regex: match with {"
+m{${1:regex}}${0:x}
+endsnippet
+
+snippet s/ "Regex: substitute with /"
+s/${1:regex}/${2:substitute}/${0:xgr}
+endsnippet
+
+snippet s{ "Regex: substitute with {"
+s{${1:regex}}{${2:substitute}}${0:xgr}
+endsnippet
+
+snippet qr{ "Regex: simple"
+qr{${1:regex}}${0:x}
+endsnippet
+
+snippet qrr{ "Regex: complex"
+qr{
+	\A
+	${1:regex}
+	\z
+}${0:x}
+endsnippet
+
+# => Helpers ------------------------------------------------------------------------------------------------------ {{{1
+
+snippet #! "Helper: shebang" b
+#!/usr/bin/env perl
+
+$0
+
+__END__
+endsnippet
+
+snippet bp "Helper: debug break here" b
+$DB::single=1;
+$0
+endsnippet
+
+snippet . "Helper: fat comma"
+=> ${1:value},
+$0
+endsnippet
+
+snippet slurp "Helper: slurp" b
+my $${1:var} = do { local $/ = undef; open my $fh, '<', ${2:$file}; <$fh> };
+$0
+endsnippet
+
+snippet notimp "Helper: not implemented" b
+croak((caller (0))[3], ': not implemented yet');
+$0
+endsnippet
+
+snippet pvisit "Helper: path visit" b
+$${1:path}->visit(
+	sub ($path, $state) {
+		$path->is_file && !-l $path
+			or return;
+		$0
+	},
+	{
+		'follow_symlinks' => 0,
+		'recurse'         => 1,
+	},
+);
+endsnippet
+
+# => Headers ------------------------------------------------------------------------------------------------------ {{{1
+
+snippet head "Header: pragmas" b
+use v5.38;
+use autodie;
+use open ':locale';
+use utf8;
+use warnings     qw(FATAL utf8);
+use experimental qw(builtin class declared_refs defer for_list refaliasing try);
+
+$0
+endsnippet
+
+snippet useau "Header: use autoclean" b
+use namespace::autoclean qw(-except import);
+endsnippet
+
+snippet usecarp "Header: use Carp" b
+use Carp qw(croak);
+endsnippet
+
+snippet usecon "Header: use constant" b
+use constant {
+	'${1:constant_name}' => ${2:'value'},
+};
+endsnippet
+
+snippet usedd "Header: use Data::Dump" b
+use Data::Dump qw(dd ddx);
+endsnippet
+
+snippet usedump "Header: use Data::Dumper" b
+use Data::Dumper qw(Dumper);
+endsnippet
+
+snippet usedp "Header: use Data::Printer" b
+use Data::Printer;
+endsnippet
+
+snippet usedt "Header: use DateTime" b
+use DateTime                   qw();
+use DateTime::Format::Strptime qw();
+use DateTime::Locale           qw();
+use DateTime::TimeZone         qw();
+
+state %datetime_defaults = (
+	'locale'    => DateTime::Locale->load('nl_NL'),
+	'time_zone' => DateTime::TimeZone->new(name => 'UTC'),
+);
+state $datetime_formatter = DateTime::Format::Strptime->new(
+	'pattern' => '%F %T',
+	'strict'  => 1,
+	%datetime_defaults,
+);
+endsnippet
+
+snippet useeng "Header: use English" b
+use English qw(-no_match_vars);
+endsnippet
+
+snippet useerrno "Header: use Errno" b
+use Errno qw(:POSIX);
+endsnippet
+
+snippet useexpe "Header: use Experimental" b
+use experimental qw(builtin class declared_refs defer for_list refaliasing try);
+endsnippet
+
+snippet useexpo "Header: use Exporter" b
+use Exporter qw(import);
+our @EXPORT_OK = qw(
+);
+endsnippet
+
+snippet usejson "Header: use JSON" b
+use JSON::PP qw();
+endsnippet
+
+snippet usejsonx "Header: use JSON::MaybeXS" b
+use JSON::MaybeXS qw();
+endsnippet
+
+snippet uselu "Header: use List::Util" b
+use List::Util qw(any);
+endsnippet
+
+snippet usesu "Header: use Sub::Util" b
+use Sub::Util qw(set_subname);
+endsnippet
+
+snippet uselog "Header: use Log::Any" b
+use Log::Any          qw($log);
+use Log::Any::Adapter qw(Stderr), ('log_level' => 'notice');
+endsnippet
+
+snippet usematch "Header: use match keyword" b
+use Syntax::Keyword::Match;
+use Syntax::Operator::Equ;
+use Syntax::Operator::Eqr;
+endsnippet
+
+snippet usemod "Header: use Module::Runtime" b
+use Module::Runtime qw(use_module);
+endsnippet
+
+snippet usepath "Header: use Path::Tiny" b
+use Path::Tiny qw(path);
+endsnippet
+
+snippet userefu "Header: use Ref::Util" b
+use Ref::Util qw(is_arrayref is_hashref);
+endsnippet
+
+snippet usesys "Header: use System::Command" b
+use System::Command qw();
+endsnippet
+
+snippet usetestbas "Header: use Test2::Tools::Basic" b
+use Test2::Tools::Basic qw(todo);
+endsnippet
+
+snippet usetime "Header: use Time::Moment" b
+use DateTime::TimeZone qw();
+use Time::Moment       qw();
+endsnippet
+
+snippet usetimehr "Header: use Time::HiRes" b
+use Time::HiRes qw(gettimeofday usleep);
+endsnippet
+
+snippet useua "Header: use Mojo UserAgent" b
+use Mojo::URL       qw();
+use Mojo::UserAgent qw();
+
+use constant {
+    'UA'  => Mojo::UserAgent->new->max_redirects(2)->request_timeout(10)->tap(sub {$_->proxy->detect}),
+    'URL' => Mojo::URL->new('https://'),
+};
+endsnippet
+
+snippet useyam "Header: use YAML" b
+use YAML::XS qw();
+endsnippet
+
+# => Packages ----------------------------------------------------------------------------------------------------- {{{1
+
+snippet package "Package: new" b
+package ${1:PackageName};
+
+# ABSTRACT: Package $1
+
+$0
+
+__END__
+endsnippet
+
+snippet pkgm "Package: method call"
+__PACKAGE__->${1:package_method}(${0:params})
+endsnippet
+
+# => Classes (Mojo) ----------------------------------------------------------------------------------------------- {{{1
+
+snippet base "Class: Mojo::Base base class" b
+use v5.38;
+use Mojo::Base           qw(-base);
+use namespace::autoclean qw();
+
+$0
+endsnippet
+
+snippet basea "Class: Mojo::Base base class with async_await" b
+use v5.38;
+use Mojo::Base           qw(-base -async_await);
+use namespace::autoclean qw();
+
+$0
+endsnippet
+
+snippet der "Class: Mojo::Base derived class" b
+use v5.38;
+use Mojo::Base           qw(${1:Name});
+use namespace::autoclean qw();
+
+$0
+endsnippet
+
+snippet dera "Class: Mojo::Base derived class with async_await" b
+use v5.38;
+use Mojo::Base           qw(${1:Name} -async_await);
+use namespace::autoclean qw();
+
+$0
+endsnippet
+
+snippet role "Class: Mojo::Base role" b
+use v5.38;
+use Mojo::Base           qw(-role);
+use namespace::autoclean qw();
+
+$0
+endsnippet
+
+snippet has "Class: Mojo attribute" b
+has '${1:name}' => sub ($self) {${2}};
+$0
+endsnippet
+
+# => Classes (Moo/Moose) ------------------------------------------------------------------------------------------ {{{1
+
+snippet moo "Class: Moo/Moose" b
+use ${1:Moo};
+use namespace::autoclean qw();
+
+$0
+
+__PACKAGE__->meta->make_immutable;
+endsnippet
+
+snippet mhas "Class: attribute" b
+has '${1:name}' => (
+	'is' => '${2:ro|rw}',
+);
+$0
+endsnippet
+
+snippet mhasbuild "Class: attribute with builder" b
+has '${1:name}' => (
+	'is'      => '${2:ro|rw}',
+	'lazy'    => 1,
+	'builder' => '_build_$1',
+);
+$0
+
+sub _build_$1 ($self) {
+	${3:...}
+}
+endsnippet
+
+snippet mhasdefault "Class: attribute with defauld" b
+has '${1:name}' => (
+	'is'      => '${2:ro|rw}',
+	'isa'     => '${3:Str|Int|HashRef|ArrayRef|etc}',
+	'lazy'    => 1,
+	'default' => sub {${4:default_value}},
+);
+$0
+endsnippet
+
+snippet moverride "Class: override" b
+override ${1:name} => sub (${2:$self}) {
+	$0
+};
+endsnippet
+
+# => Tests -------------------------------------------------------------------------------------------------------- {{{1
+
+snippet testm "Test: new module" b
+#!/usr/bin/env perl
+
+use v5.38;
+
+# core
+use lib '.';
+
+# non core
+use Test2::V0;
+use Test2::Tools::Spec;
+
+# local
+use t::lib::Utils qw();
+use ${1:ModuleName};
+
+describe '${2:block name}' => sub {
+	tests '${3:test name}' => sub {
+		$0
+	};
+};
+
+done_testing();
+
+__END__
+endsnippet
+
+snippet descr "Test: describe block" b
+describe '${1:block name}' => sub {
+	tests '${2:test name}' => sub {
+		$0
+	};
+};
+endsnippet
+
+snippet tests "Test: block" b
+tests '${1:test name}' => sub {
+	$0
+};
+endsnippet
+
+# => Pod ---------------------------------------------------------------------------------------------------------- {{{1
+
+snippet pod "POD: block"
+__END__
+
+=encoding UTF-8
+
+=head1 NAME
+
+${1:`(ps/current-package-name)`} -- $0
+
+=head1 DESCRIPTION
+
+=head1 SYNOPSIS
+
+=cut
+endsnippet
+
+snippet poda "POD: attributes"
+=head1 ATTRIBUTES
+$0
+=cut
+endsnippet
+
+snippet podm "POD: methods"
+=head1 METHODS
+$0
+=cut
+endsnippet
