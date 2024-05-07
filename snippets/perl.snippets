@@ -219,7 +219,7 @@ snippet slurp "Helper: slurp" b
 	$0
 
 snippet slurpd "Helper: slurp data" b
-	my ($data, $input, $expected) = YAML::XS::Load(do {local $/ = undef; <DATA>})->@{qw(data input expected)};
+	my (\$data, \$input, \$expected) = YAML::XS::Load(do {local \$/ = undef; <DATA>})->@{qw(data input expected)};
 	$0
 
 snippet notimp "Helper: not implemented" b
@@ -470,7 +470,7 @@ snippet testh "Header: test pragmas" b
 
 	use YAML::XS qw();
 
-	my ($data, $input, $expected) = YAML::XS::Load(do {local $/ = undef; <DATA>})->@{qw(data input expected)};
+	my (\$data, \$input, \$expected) = YAML::XS::Load(do {local \$/ = undef; <DATA>})->@{qw(data input expected)};
 
 	$0
 
