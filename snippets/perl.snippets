@@ -70,12 +70,6 @@ snippet for "Loop: foreach"
 	}
 	$0
 
-snippet fori "Loop: foreach indexed"
-	foreach my (${1:\$key}, ${2:\$value}) (${3:indexed(@array)}) {
-		${4:...}
-	}
-	$0
-
 snippet for_ "Loop: for $_"
 	for (${1:@array}) {
 		${2:...}
@@ -85,6 +79,18 @@ snippet for_ "Loop: for $_"
 snippet forc "Loop: for C-style"
 	for (my $${1:i} = 0; $$1 < ${2:\$size}; ++$$1) {
 		${3:...}
+	}
+	$0
+
+snippet fori "Loop: foreach indexed"
+	foreach my (${1:\$index}, ${2:\$value}) (${3:indexed(@array)}) {
+		${4:...}
+	}
+	$0
+
+snippet forkv "Loop: foreach key, value"
+	foreach my (${1:\$key}, ${2:\$value}) (${3:%hash}) {
+		${4:...}
 	}
 	$0
 
@@ -212,6 +218,10 @@ snippet slurp "Helper: slurp" b
 	my $${1:var} = do { local $/ = undef; open my $fh, '<', ${2:$file}; <$fh> };
 	$0
 
+snippet slurpd "Helper: slurp data" b
+	my ($data, $input, $expected) = YAML::XS::Load(do {local $/ = undef; <DATA>})->@{qw(data input expected)};
+	$0
+
 snippet notimp "Helper: not implemented" b
 	croak((caller (0))[3], ': not implemented yet');
 	$0
@@ -315,6 +325,11 @@ snippet usematch "Header: use match keyword" b
 snippet usemod "Header: use Module::Runtime" b
 	use Module::Runtime qw(use_module);
 
+snippet useover "Header: use overload" b
+    use overload
+        'bool'     => sub ($self, @) {1},
+        'fallback' => 1;
+
 snippet usepath "Header: use Path::Tiny" b
 	use Path::Tiny qw(path);
 
@@ -323,6 +338,10 @@ snippet userefu "Header: use Ref::Util" b
 
 snippet usesys "Header: use System::Command" b
 	use System::Command qw();
+
+snippet usetest "Header: use Test2::V0" b
+	use Test2::V0;
+	use Test2::Tools::Spec;
 
 snippet usetestbas "Header: use Test2::Tools::Basic" b
 	use Test2::Tools::Basic qw(todo);
@@ -358,7 +377,7 @@ snippet package "Package: new" b
 	__END__
 
 snippet pkgm "Package: method call"
-	__PACKAGE__->${1:package_method}(${0:params})
+	__PACKAGE__->${1:package_method}(${0:@params})
 
 # => Classes (Mojo) ----------------------------------------------------------------------------------------------- {{{1
 
@@ -444,6 +463,25 @@ snippet moverride "Class: override" b
 	};
 
 # => Tests -------------------------------------------------------------------------------------------------------- {{{1
+
+snippet testh "Header: test pragmas" b
+	use Test2::V0;
+	use Test2::Tools::Spec;
+
+	use YAML::XS qw();
+
+	my ($data, $input, $expected) = YAML::XS::Load(do {local $/ = undef; <DATA>})->@{qw(data input expected)};
+
+	$0
+
+	done_testing();
+
+	__DATA__
+
+	---
+	data: null
+	expected: null
+	input: null
 
 snippet testm "Test: new module" b
 	#!/usr/bin/env perl
