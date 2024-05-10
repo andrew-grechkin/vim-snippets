@@ -4,7 +4,7 @@ snippet ter "Conditional: ternary"
 	${1:condition} ? ${2:expression} : ${3:expression};
 
 snippet if "Conditional: if"
-	if ($1) {
+	if (${1}) {
 		${0:...}
 	}
 
@@ -14,12 +14,12 @@ snippet else "Conditional: else"
 	}
 
 snippet elsif "Conditional: elsif"
-	elsif ($1) {
+	elsif (${1}) {
 		${0:...}
 	}
 
 snippet ife "Conditional: if..else"
-	if ($1) {
+	if (${1}) {
 		${2:...}
 	}
 	else {
@@ -27,10 +27,10 @@ snippet ife "Conditional: if..else"
 	}
 
 snippet ifee "Conditional: if..elsif..else"
-	if ($1) {
+	if (${1}) {
 		${3:...}
 	}
-	elsif ($2) {
+	elsif (${2}) {
 		${4:...}
 	}
 	else {
@@ -41,11 +41,11 @@ snippet ifee "Conditional: if..elsif..else"
 
 snippet xif "Conditional one-line: if"
 	${1:expression} if ${2:condition};
-	$0
+	${0}
 
 snippet xunl "Conditional one-line: unless"
 	${1:expression} unless ${2:condition};
-	$0
+	${0}
 
 # => Loops -------------------------------------------------------------------------------------------------------- {{{1
 
@@ -65,10 +65,10 @@ snippet grepx "Loop: grep"
 	grep ${0}, ${1:@array}
 
 snippet for "Loop: foreach"
-	foreach my ${1:$x} (${2:@array}) {
+	foreach my ${1:\$x} (${2:@array}) {
 		${3:...}
 	}
-	$0
+	${0}
 
 snippet for_ "Loop: for $_"
 	for (${1:@array}) {
@@ -77,38 +77,38 @@ snippet for_ "Loop: for $_"
 	$0
 
 snippet forc "Loop: for C-style"
-	for (my $${1:i} = 0; $$1 < ${2:\$size}; ++$$1) {
+	for (my $${1:i} = 0; $${1} < ${2:\$size}; ++$${1}) {
 		${3:...}
 	}
-	$0
+	${0}
 
 snippet fori "Loop: foreach indexed"
 	foreach my (${1:\$index}, ${2:\$value}) (${3:indexed(@array)}) {
 		${4:...}
 	}
-	$0
+	${0}
 
 snippet forkv "Loop: foreach key, value"
 	foreach my (${1:\$key}, ${2:\$value}) (${3:%hash}) {
 		${4:...}
 	}
-	$0
+	${0}
 
 snippet while "Loop: while"
-	while ($1) {
+	while (${1}) {
 		${2:...}
 	}
-	$0
+	${0}
 
 # => One line loops ----------------------------------------------------------------------------------------------- {{{1
 
 snippet xfor "Loop one-line: foreach"
 	${2:expression} foreach ${1:@array};
-	$0
+	${0}
 
 snippet xwhi "Loop one-line: while"
 	${2:expression} while ${1:condition};
-	$0
+	${0}
 
 # => Error checking ----------------------------------------------------------------------------------------------- {{{1
 
@@ -118,7 +118,7 @@ snippet try "Error checking: try"
 	} catch (\$err) {
 		${2:warn} ${3:"error occured: \$err"};
 	}
-	$0
+	${0}
 
 snippet tryf "Error checking: try finally"
 	try {
@@ -128,7 +128,7 @@ snippet tryf "Error checking: try finally"
 	} finally {
 		${4:...}
 	}
-	$0
+	${0}
 
 snippet eval "Error checking: eval"
 	eval {
@@ -136,17 +136,17 @@ snippet eval "Error checking: eval"
 		1;
 	}
 	or do {
-		chomp(my \$err = $@ || 'zombie error');
+		chomp(my \$err = \$@ || 'zombie error');
 		${2:warn} ${3:"eval finished with: \$err"};
 	};
-	$0
+	${0}
 
 snippet ordo "Error checking: or do"
 	or do {
-		chomp(my \$err = $@ || 'zombie error');
+		chomp(my \$err = \$@ || 'zombie error');
 		${1:warn} ${2:"eval finished with: \$err"};
 	};
-	$0
+	${0}
 
 # => Functions ---------------------------------------------------------------------------------------------------- {{{1
 
@@ -155,7 +155,7 @@ snippet sub "Function: named"
 		${3:...}
 		return;
 	}
-	$0
+	${0}
 
 snippet suba "Function: anonymous"
 	sub (${1:@params}) {
@@ -166,7 +166,7 @@ snippet begin "Function: compiletime prologue" b
 	BEGIN {
 		${1:...}
 	}
-	$0
+	${0}
 
 snippet end "Function: epilogue" b
 	END {
@@ -202,36 +202,36 @@ snippet qrr{ "Regex: complex"
 snippet #! "Helper: shebang" b
 	#!/usr/bin/env perl
 
-	$0
+	${0}
 
 	__END__
 
 snippet bp "Helper: debug break here" b
-	$DB::single=1;
-	$0
+	\$DB::single=1;
+	${0}
 
 snippet . "Helper: fat comma"
 	=> ${1:value},
-	$0
+	${0}
 
 snippet slurp "Helper: slurp" b
-	my $${1:var} = do { local $/ = undef; open my $fh, '<', ${2:$file}; <$fh> };
-	$0
+	my $${1:var} = do { local \$/ = undef; open my \$fh, '<', ${2:\$file}; <\$fh> };
+	${0}
 
 snippet slurpd "Helper: slurp data" b
 	my (\$data, \$input, \$expected) = YAML::XS::Load(do {local \$/ = undef; <DATA>})->@{qw(data input expected)};
-	$0
+	${0}
 
 snippet notimp "Helper: not implemented" b
 	croak((caller (0))[3], ': not implemented yet');
-	$0
+	${0}
 
 snippet pvisit "Helper: path visit" b
 	$${1:path}->visit(
-		sub ($path, $state) {
-			$path->is_file && !-l $path
+		sub (\$path, \$state) {
+			\$path->is_file && !-l \$path
 				or return;
-			$0
+			${0}
 		},
 		{
 			'follow_symlinks' => 0,
@@ -249,7 +249,7 @@ snippet head "Header: pragmas" b
 	use warnings     qw(FATAL utf8);
 	use experimental qw(builtin class declared_refs defer for_list refaliasing try);
 
-	$0
+	${0}
 
 snippet useau "Header: use autoclean" b
 	use namespace::autoclean qw(-except import);
@@ -281,7 +281,7 @@ snippet usedt "Header: use DateTime" b
 		'locale'    => DateTime::Locale->load('nl_NL'),
 		'time_zone' => DateTime::TimeZone->new(name => 'UTC'),
 	);
-	state $datetime_formatter = DateTime::Format::Strptime->new(
+	state \$datetime_formatter = DateTime::Format::Strptime->new(
 		'pattern' => '%F %T',
 		'strict'  => 1,
 		%datetime_defaults,
@@ -314,7 +314,7 @@ snippet usesu "Header: use Sub::Util" b
 	use Sub::Util qw(set_subname);
 
 snippet uselog "Header: use Log::Any" b
-	use Log::Any          qw($log);
+	use Log::Any          qw(\$log);
 	use Log::Any::Adapter qw(Stderr), ('log_level' => 'notice');
 
 snippet usematch "Header: use match keyword" b
@@ -327,7 +327,7 @@ snippet usemod "Header: use Module::Runtime" b
 
 snippet useover "Header: use overload" b
     use overload
-        'bool'     => sub ($self, @) {1},
+        'bool'     => sub (\$self, @) {1},
         'fallback' => 1;
 
 snippet usepath "Header: use Path::Tiny" b
@@ -358,7 +358,7 @@ snippet useua "Header: use Mojo UserAgent" b
 	use Mojo::UserAgent qw();
 
 	use constant {
-		'UA'  => Mojo::UserAgent->new->max_redirects(2)->request_timeout(10)->tap(sub {$_->proxy->detect}),
+		'UA'  => Mojo::UserAgent->new->max_redirects(2)->request_timeout(10)->tap(sub {\$_->proxy->detect}),
 		'URL' => Mojo::URL->new('https://'),
 	};
 
@@ -370,9 +370,9 @@ snippet useyam "Header: use YAML" b
 snippet package "Package: new" b
 	package ${1:PackageName};
 
-	# ABSTRACT: Package $1
+	# ABSTRACT: Package ${1}
 
-	$0
+	${0}
 
 	__END__
 
@@ -386,39 +386,39 @@ snippet base "Class: Mojo::Base base class" b
 	use Mojo::Base           qw(-base);
 	use namespace::autoclean qw();
 
-	$0
+	${0}
 
 snippet basea "Class: Mojo::Base base class with async_await" b
 	use v5.38;
 	use Mojo::Base           qw(-base -async_await);
 	use namespace::autoclean qw();
 
-	$0
+	${0}
 
 snippet der "Class: Mojo::Base derived class" b
 	use v5.38;
 	use Mojo::Base           qw(${1:Name});
 	use namespace::autoclean qw();
 
-	$0
+	${0}
 
 snippet dera "Class: Mojo::Base derived class with async_await" b
 	use v5.38;
 	use Mojo::Base           qw(${1:Name} -async_await);
 	use namespace::autoclean qw();
 
-	$0
+	${0}
 
 snippet role "Class: Mojo::Base role" b
 	use v5.38;
 	use Mojo::Base           qw(-role);
 	use namespace::autoclean qw();
 
-	$0
+	${0}
 
 snippet has "Class: Mojo attribute" b
-	has '${1:name}' => sub ($self) {${2}};
-	$0
+	has '${1:name}' => sub (\$self) {${2}};
+	${0}
 
 # => Classes (Moo/Moose) ------------------------------------------------------------------------------------------ {{{1
 
@@ -426,7 +426,7 @@ snippet moo "Class: Moo/Moose" b
 	use ${1:Moo};
 	use namespace::autoclean qw();
 
-	$0
+	${0}
 
 	__PACKAGE__->meta->make_immutable;
 
@@ -434,17 +434,17 @@ snippet mhas "Class: attribute" b
 	has '${1:name}' => (
 		'is' => '${2:ro|rw}',
 	);
-	$0
+	${0}
 
 snippet mhasbuild "Class: attribute with builder" b
 	has '${1:name}' => (
 		'is'      => '${2:ro|rw}',
 		'lazy'    => 1,
-		'builder' => '_build_$1',
+		'builder' => '_build_${1}',
 	);
-	$0
+	${0}
 
-	sub _build_$1 ($self) {
+	sub _build_${1} (\$self) {
 		${3:...}
 	}
 
@@ -455,11 +455,11 @@ snippet mhasdefault "Class: attribute with defauld" b
 		'lazy'    => 1,
 		'default' => sub {${4:default_value}},
 	);
-	$0
+	${0}
 
 snippet moverride "Class: override" b
-	override ${1:name} => sub (${2:$self}) {
-		$0
+	override ${1:name} => sub (${2:\$self}) {
+		${0}
 	};
 
 # => Tests -------------------------------------------------------------------------------------------------------- {{{1
@@ -501,7 +501,7 @@ snippet testm "Test: new module" b
 
 	describe '${2:block name}' => sub {
 		tests '${3:test name}' => sub {
-			$0
+			${0}
 		};
 	};
 
@@ -512,13 +512,13 @@ snippet testm "Test: new module" b
 snippet descr "Test: describe block" b
 	describe '${1:block name}' => sub {
 		tests '${2:test name}' => sub {
-			$0
+			${0}
 		};
 	};
 
 snippet tests "Test: block" b
 	tests '${1:test name}' => sub {
-		$0
+		${0}
 	};
 
 # => Pod ---------------------------------------------------------------------------------------------------------- {{{1
@@ -530,7 +530,7 @@ snippet pod "POD: block"
 
 	=head1 NAME
 
-	${1:`(ps/current-package-name)`} -- $0
+	${1:`(ps/current-package-name)`} -- ${0}
 
 	=head1 DESCRIPTION
 
@@ -540,10 +540,10 @@ snippet pod "POD: block"
 
 snippet poda "POD: attributes"
 	=head1 ATTRIBUTES
-	$0
+	${0}
 	=cut
 
 snippet podm "POD: methods"
 	=head1 METHODS
-	$0
+	${0}
 	=cut
