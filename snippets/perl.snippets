@@ -74,7 +74,7 @@ snippet for_ "Loop: for $_"
 	for (${1:@array}) {
 		${2:...}
 	}
-	$0
+	${0}
 
 snippet forc "Loop: for C-style"
 	for (my $${1:i} = 0; $${1} < ${2:\$size}; ++$${1}) {
@@ -472,7 +472,7 @@ snippet testh "Header: test pragmas" b
 
 	my (\$data, \$input, \$expected) = YAML::XS::Load(do {local \$/ = undef; <DATA>})->@{qw(data input expected)};
 
-	$0
+	${0}
 
 	done_testing();
 
